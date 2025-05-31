@@ -38,17 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let answeredWords = new Set();
     let isWatering = false;
 
+    var lottieContainer = null;
 
-    const lottieContainer = document.createElement('div');
-    lottieContainer.className = 'lottie-container';
-
-    var anim = lottie.loadAnimation({
-        container: lottieContainer,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        path: 'assets/plant.json'
-    });
+    var anim = null;
 
     // Handle card selection and speech
     seedCards.forEach(card => {
@@ -97,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerPlantingAnimation(selectedCard)
 
     });
-
     function triggerPlantingAnimation(card) {
         const correctSyllable = card.dataset.syllables;
         const seedIcon = card.querySelector('img');
@@ -107,21 +98,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const startRect = seedIcon.getBoundingClientRect();
         Object.assign(seedClone.style, {
+            position: 'absolute',
             left: `${startRect.left}px`,
             top: `${startRect.top}px`,
             width: `${seedIcon.width}px`,
-            height: `${seedIcon.height}px`
+            height: `${seedIcon.height}px`,
+            transition: 'all 0.6s ease',
+            zIndex: 1000
         });
 
         const targetRect = plantSpot.getBoundingClientRect();
-        setTimeout(() => {
+
+        // Set target position in next frame
+        requestAnimationFrame(() => {
             seedClone.style.left = `${targetRect.left + 50}px`;
             seedClone.style.top = `${targetRect.top + 100}px`;
             seedClone.style.opacity = '0';
-        }, 50);
+        });
 
-        lottieContainer.innerHTML = ''; // Clear previous animation
-
+        // PRELOAD BUT DO NOT START YET
+        lottieContainer = document.createElement('div');
+        lottieContainer.className = 'lottie-container';
         anim = lottie.loadAnimation({
             container: lottieContainer,
             renderer: 'svg',
@@ -130,17 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
             path: 'assets/plant.json'
         });
 
-        setTimeout(() => {
+        // WAIT FOR SEED TO FINISH DROPPING
+        seedClone.addEventListener('transitionend', () => {
+            // Play plant sound AFTER seed lands
             sounds.plant.currentTime = 0;
             sounds.plant.play();
-            seedClone.remove();
+
+            seedClone.remove(); // Remove flying seed
+
+            // THEN trigger plant animation
             plantSpot.innerHTML = '';
             plantSpot.appendChild(lottieContainer);
+            anim.goToAndStop(0, true); // Reset to frame 0
             anim.playSegments([0, 5], true);
-            anim.play();
-            anim.addEventListener('complete', () => showWateringCans(correctSyllable, anim), { once: true });
-        }, 800);
+
+            // When first segment ends, continue
+            anim.addEventListener('complete', () => {
+                
+                showWateringCans(correctSyllable, anim);
+            }, { once: true });
+        }, { once: true });
     }
+
 
     function showWateringCans(correctSyllable, plantAnimation) {
         const syllableButtons = document.getElementById('syllable-buttons');
@@ -161,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 isWatering = true;
 
-              
+
                 const selected = button.dataset.syll;
                 const waterCan = createWateringCan(button);
                 buttons.forEach(b => b.classList.remove('selected'));
@@ -175,9 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     path: 'assets/watering_can.json'
                 });
 
-                setTimeout(()=>{
+                setTimeout(() => {
                     sounds.water.currentTime = 0;
-                sounds.water.play();},800)
+                    sounds.water.play();
+                }, 800)
 
 
                 wateringAnim.addEventListener('complete', () => {
@@ -196,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             syllableButtons.style.display = 'none';
                             selectedCard.style.display = 'none';
                             isWatering = false;
+                            
                             showSuccessMessage();
                         }, { once: true });
                     } else {
@@ -275,6 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 successMsg.classList.remove('show');
                 setTimeout(() => successMsg.remove(), 500); // Wait for fade out
+                lottieContainer.remove(); // Clear animation container
                 anim.destroy(); // Clean up animation
                 generateNewSeeds();
             }, 2000);
