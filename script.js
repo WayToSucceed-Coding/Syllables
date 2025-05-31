@@ -21,6 +21,12 @@ this.wordDatabase = [
     { word: 'bicycle', syllables: 3 },
     { word: 'dinosaur', syllables: 3 }
 ];
+
+const sounds = {
+    plant: new Audio('assets/seed_plant.mp3'),
+    water: new Audio('assets/watering_can.mp3'),
+    grow: new Audio('assets/plant_growing.mp3')
+};
 document.addEventListener('DOMContentLoaded', () => {
     const seedCards = document.querySelectorAll('.seed-card');
     const plantSpot = document.getElementById('plant-spot');
@@ -88,7 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
         plantContainer.appendChild(selectedCard);
         plantContainer.style.display = 'flex';
 
-        setTimeout(() => triggerPlantingAnimation(selectedCard), 600);
+        triggerPlantingAnimation(selectedCard)
+
     });
 
     function triggerPlantingAnimation(card) {
@@ -124,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         setTimeout(() => {
+            sounds.plant.currentTime = 0;
+            sounds.plant.play();
             seedClone.remove();
             plantSpot.innerHTML = '';
             plantSpot.appendChild(lottieContainer);
@@ -151,6 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isWatering) return; // Block if already watering
 
                 isWatering = true;
+
+              
                 const selected = button.dataset.syll;
                 const waterCan = createWateringCan(button);
                 buttons.forEach(b => b.classList.remove('selected'));
@@ -164,11 +175,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     path: 'assets/watering_can.json'
                 });
 
+                setTimeout(()=>{
+                    sounds.water.currentTime = 0;
+                sounds.water.play();},800)
+
+
                 wateringAnim.addEventListener('complete', () => {
 
                     waterCan.remove();
 
                     if (selected === correctSyllable) {
+                        sounds.grow.currentTime = 0;
+                        sounds.grow.play();
                         anim.playSegments([6, 100], true);
                         anim.addEventListener('complete', () => {
                             answeredWords.add(selectedCard.dataset.word);
