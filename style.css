@@ -1,0 +1,246 @@
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ body {
+   font-family: 'Comic Sans MS', cursive, sans-serif;
+   margin: 0;
+   padding: 0;
+   background: #f0f8ff;
+   overflow-x: hidden;
+ }
+
+ .game-container {
+   max-width: 1000px;
+   margin: 20px auto;
+   padding: 20px;
+   background: url("assets/bg.png") no-repeat center center;
+   background-size: cover;
+   border-radius: 25px;
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+   min-height: 700px;
+ }
+
+ .game-header {
+   text-align: center;
+   margin-bottom: 30px;
+ }
+
+ .game-title {
+   font-size: 3rem;
+   color: #2E8B57;
+   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+   margin-bottom: 10px;
+ }
+
+ .score-bar {
+   background: rgba(255, 255, 255, 0.9);
+   border-radius: 25px;
+   padding: 15px 30px;
+   display: inline-block;
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+ }
+
+ .score-item {
+   display: inline-block;
+   margin: 0 20px;
+   font-size: 1.2rem;
+   font-weight: bold;
+   color: #2E8B57;
+ }
+
+ .seed-selection {
+   display: flex;
+   justify-content: center;
+   gap: 20px;
+   margin: 20px 0;
+   flex-wrap: wrap;
+ }
+
+ .seed-card {
+   background: rgba(255, 255, 255, 0.7);
+   border: 2px solid #2E8B57;
+   border-radius: 15px;
+   padding: 20px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   min-width: 120px;
+   text-align: center;
+   backdrop-filter: blur(6px);
+ }
+
+ .seed-card:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+   border-color: #a2e313;
+ }
+
+ .seed-card.selected {
+   background: #c6e585;
+   border-color: #a2e313;
+   transform: translateY(-5px);
+ }
+
+ .seed-card.invisible {
+   display: none;
+ }
+
+ .seed-icon {
+
+   margin-bottom: 10px;
+   display: block;
+ }
+
+ .seed-word {
+   font-size: 1.1rem;
+   font-weight: bold;
+   color: #8B008B;
+ }
+
+ .plant-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: 50px;
+   z-index: 5;
+   position: relative;
+ }
+
+ #syllable-buttons {
+   margin-top: 20px;
+ }
+
+ .plant-button {
+   display: none;
+   position: absolute;
+   left: 45%;
+   top: 85%;
+   padding: 10px 20px;
+   font-size: 1.2rem;
+   background-color: #32CD32;
+   color: white;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: background 0.3s ease;
+ }
+
+ .flying-seed {
+   position: fixed;
+   pointer-events: none;
+   transition: all 1s ease-in-out;
+   z-index: 999;
+ }
+
+ #plant-spot {
+   position: absolute;
+   left: 45%;
+   top: 65%;
+   transform: translateX(-50%);
+   width: 100px;
+   height: 100px;
+   pointer-events: none;
+   z-index: 2;
+ }
+
+ .lottie-container {
+   width: 200px;
+   height: 200px;
+ }
+
+ #watering-cans-container {
+   display: flex;
+   justify-content: center;
+   gap: 30px;
+   margin-top: 20px;
+ }
+
+ .watering-can-wrapper {
+   text-align: center;
+   cursor: pointer;
+ }
+
+ .watering-can {
+   width: 120px;
+   height: 120px;
+ }
+
+ .watering-can-wrapper.disabled {
+   pointer-events: none;
+   opacity: 0.4;
+ }
+
+ .label {
+   margin-top: 8px;
+   font-weight: bold;
+   color: #2E8B57;
+ }
+
+ .syllable-choice {
+   display: flex;
+   justify-content: center;
+   gap: 20px;
+   margin-top: 20px;
+ }
+
+ .syllable-choice button {
+   padding: 10px 20px;
+   font-size: 1.1rem;
+   background: rgba(255, 255, 255, 0.7);
+   border: 2px solid #2E8B57;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: all 0.2s ease;
+   position: relative;
+ }
+
+ .syllable-choice button:hover {
+   transform: translateY(-5px);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+   border-color: #a2e313;
+ }
+
+ .syllable-choice button.selected {
+   background: #c6e585;
+   border-color: #a2e313;
+   transform: translateY(-5px);
+ }
+
+ .feedback-message {
+   text-align: center;
+   font-size: 1.2rem;
+   color: red;
+   margin-top: 15px;
+ }
+
+ .success-message {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%) scale(0.8);
+   background: rgba(255, 255, 255, 0.95);
+   padding: 20px 30px;
+   border-radius: 12px;
+   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+   text-align: center;
+   opacity: 0;
+   transition: all 0.3s ease;
+   z-index: 1000;
+ }
+
+ .success-message.show {
+   opacity: 1;
+   transform: translate(-50%, -50%) scale(1);
+ }
+
+ .success-message h2 {
+   color: #2e7d32;
+   margin: 0 0 10px;
+ }
+
+ .success-message p {
+   margin: 0;
+   color: #333;
+ }

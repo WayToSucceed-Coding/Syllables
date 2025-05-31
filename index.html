@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talking Word Garden</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.0/lottie.min.js"></script>
+  </head>
+  <body>
+    <div class="game-container">
+      <!-- Game Header -->
+      <div class="game-header">
+        <h1 class="game-title">Talking Seeds</h1>
+        <div class="score-bar">
+          <span class="score-item">Score: <span id="score">0</span></span>
+        </div>
+      </div>
+
+      <div class="seed-selection">
+        <div class="seed-card" data-word="cat" data-syllables="1">
+          <span class="seed-icon"
+            ><img src="assets/seed.png" width="50" height="50"
+          /></span>
+          <div class="seed-word">Cat</div>
+        </div>
+
+        <div class="seed-card" data-word="apple" data-syllables="2">
+          <span class="seed-icon"
+            ><img src="assets/seed.png" width="50" height="50"
+          /></span>
+          <div class="seed-word">Apple</div>
+        </div>
+
+        <div class="seed-card" data-word="butterfly" data-syllables="3">
+          <span class="seed-icon"
+            ><img src="assets/seed.png" width="50" height="50"
+          /></span>
+          <div class="seed-word">Butterfly</div>
+        </div>
+      </div>
+
+      <button id="plant-button" class="plant-button">Plant Here</button>
+
+      <div id="plant-spot"></div>
+
+      <div id="plant-container" class="plant-container" style="display: none">
+        <!-- JS will populate this -->
+      </div>
+
+      <div id="syllable-buttons" class="syllable-choice" style="display: none">
+        <button data-syll="1">1 syllable</button>
+        <button data-syll="2">2 syllables</button>
+        <button data-syll="3">3 syllables</button>
+      </div>
+
+      <div id="watering-cans-container" style="display: none">
+        <div class="watering-can-wrapper" data-syll="1">
+          <div class="watering-can" id="watering-can-1"></div>
+        </div>
+        <div class="watering-can-wrapper" data-syll="2">
+          <div class="watering-can" id="watering-can-2"></div>
+        </div>
+        <div class="watering-can-wrapper" data-syll="3">
+          <div class="watering-can" id="watering-can-3"></div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
